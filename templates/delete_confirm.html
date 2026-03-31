@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Delete Story - Confirm Password</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="form-container glassmorphism">
+        <h1>🗑️ Delete Story: "{{ story[1] }}"</h1>
+        <p style="color: #ff8888;">⚠️ This action cannot be undone!</p>
+        
+        <form method="POST">
+            <input type="password" name="password" placeholder="Enter story password to delete" required>
+            <button type="submit" style="background: #e74c3c;">🗑️ Confirm Delete</button>
+        </form>
+        
+        <hr style="margin: 20px 0;">
+        
+        <h3>👑 Admin Access</h3>
+        <form method="POST">
+            <input type="hidden" name="is_admin" value="true">
+            <input type="password" name="password" placeholder="Enter admin password" required>
+            <button type="submit" style="background: #2c3e50;">🔑 Delete as Admin</button>
+        </form>
+        
+        <br>
+        <a href="/" style="color: #aaa;">← Cancel and go back</a>
+    </div>
+</body>
+</html>

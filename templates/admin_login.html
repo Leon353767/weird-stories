@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Login</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="form-container glassmorphism">
+        <h1>🔐 Admin Login</h1>
+        <p style="color: #aaa; font-size: 0.8rem;">Limited attempts (5 max)</p>
+        <form method="POST">
+            <input type="password" name="password" placeholder="Enter admin password" required>
+            <button type="submit">Login as Admin</button>
+        </form>
+        <br>
+        <a href="/" style="color: #aaa;">← Back to home</a>
+    </div>
+</body>
+</html>

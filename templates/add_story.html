@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Share Your Weird Story</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="form-container glassmorphism">
+        <!-- زر العودة -->
+        <div style="margin-bottom: 20px;">
+            <a href="/" class="back-btn" style="color: #aaa; text-decoration: none; display: inline-flex; align-items: center;">
+                ← Back to Home
+            </a>
+        </div>
+        
+        <h1>📖 What happened to you?</h1>
+        
+        <div class="info-box" style="background: rgba(255,255,255,0.1); padding: 10px; border-radius: 16px; margin-bottom: 20px; font-size: 0.8rem;">
+            ⚠️ Guidelines: No inappropriate content. Stories with bad words will be rejected.
+        </div>
+        
+        <form method="POST">
+            <input type="text" name="title" placeholder="Give your story a title (max 200 characters)" required maxlength="200">
+            <select name="category" required>
+                <option value="Funny">😂 Funny</option>
+                <option value="Scary">👻 Scary</option>
+                <option value="Weird">🌀 Weird</option>
+            </select>
+            <textarea name="content" rows="8" placeholder="Write your strangest experience... (max 5000 characters)" required maxlength="5000"></textarea>
+            
+            <input type="password" name="password" placeholder="Create a password to delete your story later (min 3 characters)" required minlength="3">
+            <small style="color: #aaa;">⚠️ Keep this password! You'll need it to delete your story.</small>
+            
+            <button type="submit" class="btn-submit">🚀 Publish Story</button>
+        </form>
+    </div>
+</body>
+</html>
