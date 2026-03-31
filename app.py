@@ -4,6 +4,7 @@ from markupsafe import escape
 import secrets
 import database
 import re
+import os
 
 app = Flask(__name__)
 
@@ -21,7 +22,7 @@ ADMIN_PASSWORD = "las45ps29ij06vb54fg76"
 login_attempts = {}
 
 # قائمة الكلمات الممنوعة (يمكنك توسيعها)
-FORBIDDEN_WORDS = ['sex', 'porn', 'xxx', 'drugs', 'hate', 'kill', 'terrorist', 'bomb']
+FORBIDDEN_WORDS = ['sex', 'porn', 'xxx', 'drugs', 'hate', 'kill', 'terrorist', 'bomb', 'fuck', 'shit', 'asshole']
 
 # ========== دوال مساعدة للأمان ==========
 def contains_forbidden_words(text):
@@ -34,18 +35,19 @@ def contains_forbidden_words(text):
 
 def sanitize_text(text):
     """تنظيف النص من الأكواد الضارة"""
+    if not text:
+        return ''
     return escape(text)
 
 def is_admin_ip(ip):
     """التحقق من عنوان IP الخاص بالمشرف (اختياري)"""
-    # يمكنك إضافة عناوين IP الخاصة بك هنا
     admin_ips = ['127.0.0.1', '::1']
     return ip in admin_ips
 
 # تهيئة قاعدة البيانات
 database.init_db()
 
-# ========== routes ==========
+# ========== Routes ==========
 @app.route('/')
 def index():
     stories = database.get_all_stories()
@@ -191,5 +193,7 @@ def forbidden(e):
 def too_large(e):
     return "📁 File too large. Maximum size is 5MB.", 413
 
+# ========== تشغيل التطبيق ==========
 if __name__ == '__main__':
-    app.run(debug=False)
+    port = int(os.environ.get('PORT', 5000))
+    app.run(host='0.0.0.0', port=port, debug=False)
