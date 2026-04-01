@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weird Stories | Home</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="admin-bar" style="text-align: right; margin-bottom: 20px; padding: 10px 20px;">
+        {% if session.admin %}
+            <span style="color: #4CAF50; font-weight: bold;">✅ Admin Mode Active</span>
+            <a href="/admin_logout" style="color: #ff8888; margin-left: 15px; text-decoration: none;">🚪 Logout</a>
+        {% endif %}
+    </div>
+
+    <div class="main-container">
+        <aside class="sidebar">
+            <h3>📂 Story Categories</h3>
+            <ul class="category-list">
+                <li><a href="/" class="{% if not current_category %}active{% endif %}">📖 All Stories</a></li>
+                <li><a href="/category/Funny" class="{% if current_category == 'Funny' %}active{% endif %}">😂 Funny Stories</a></li>
+                <li><a href="/category/Scary" class="{% if current_category == 'Scary' %}active{% endif %}">👻 Scary Stories</a></li>
+                <li><a href="/category/Weird" class="{% if current_category == 'Weird' %}active{% endif %}">🌀 Weird Stories</a></li>
+            </ul>
+            <div class="sidebar-footer">
+                <a href="/add" class="sidebar-write-btn">✍️ Write Your Story</a>
+            </div>
+        </aside>
+
+        <div class="main-content">
+            <div class="hero">
+                <h1 class="glow">✨ Weirdest Stories Ever ✨</h1>
+                <p>{% if current_category %}Showing: <strong>{{ current_category }}</strong> stories{% else %}Share the strangest thing that happened to you{% endif %}</p>
+            </div>
+
+            <div class="stories-container">
+                {% if stories %}
+                    {% for story in stories %}
+                    <div class="story-card fade-up">
+                        <span class="category-badge {{ story[3] }}">{{ story[3] }}</span>
+                        <h2>{{ story[1] }}</h2>
+                        <p>{{ story[2][:150] }}{% if story[2]|length > 150 %}...{% endif %}</p>
+                        <a href="/story/{{ story[0] }}" class="read-more">Read full story →</a>
+                        <a href="/delete_story/{{ story[0] }}" class="delete-btn" onclick="return confirm('⚠️ Are you sure you want to delete this story? You will need the password.')">🗑️ Delete</a>
+                        <div class="date">📅 {{ story[4] }}</div>
+                    </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="no-stories">
+                        <p>😢 No stories yet. Be the first to write one!</p>
+                        <a href="/add" class="btn-pulse">Write Your Story</a>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</body>
+</html>

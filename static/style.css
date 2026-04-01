@@ -309,3 +309,22 @@ button:hover {
         font-size: 1.8rem;
     }
 }
+/* أضف هذا في نهاية ملف style.css */
+
+.warning-box {
+    background: rgba(255,100,100,0.15);
+    border-left: 4px solid #ff5555;
+    padding: 10px 15px;
+    border-radius: 12px;
+    margin-bottom: 20px;
+    font-size: 0.85rem;
+}
+
+.warning-box strong {
+    color: #ff8888;
+}
+
+.btn-submit {
+    width: 100%;
+    margin-top: 20px;
+}

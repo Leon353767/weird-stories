@@ -1,17 +1,30 @@
 import sqlite3
 
+DB_PATH = 'stories.db'
+
 def init_db():
-    conn = sqlite3.connect('stories.db')
+    """تهيئة قاعدة البيانات"""
+    conn = sqlite3.connect(DB_PATH)
     c = conn.cursor()
     c.execute('''CREATE TABLE IF NOT EXISTS stories
-                 (id INTEGER PRIMARY KEY, title TEXT, content TEXT, category TEXT, date TEXT, password TEXT)''')
+                 (id INTEGER PRIMARY KEY AUTOINCREMENT, 
+                  title TEXT NOT NULL, 
+                  content TEXT NOT NULL, 
+                  category TEXT NOT NULL, 
+                  date TEXT NOT NULL, 
+                  password TEXT NOT NULL)''')
     c.execute('''CREATE TABLE IF NOT EXISTS comments
-                 (id INTEGER PRIMARY KEY, story_id INTEGER, comment_text TEXT, date TEXT)''')
+                 (id INTEGER PRIMARY KEY AUTOINCREMENT, 
+                  story_id INTEGER NOT NULL, 
+                  comment_text TEXT NOT NULL, 
+                  date TEXT NOT NULL)''')
     conn.commit()
     conn.close()
+    print("✅ Database initialized!")
 
 def add_story(title, content, category, date, password):
-    conn = sqlite3.connect('stories.db')
+    """إضافة قصة جديدة"""
+    conn = sqlite3.connect(DB_PATH)
     c = conn.cursor()
     c.execute("INSERT INTO stories (title, content, category, date, password) VALUES (?,?,?,?,?)",
               (title, content, category, date, password))
@@ -19,7 +32,8 @@ def add_story(title, content, category, date, password):
     conn.close()
 
 def get_all_stories():
-    conn = sqlite3.connect('stories.db')
+    """جلب جميع القصص"""
+    conn = sqlite3.connect(DB_PATH)
     c = conn.cursor()
     c.execute("SELECT * FROM stories ORDER BY id DESC")
     stories = c.fetchall()
@@ -27,7 +41,8 @@ def get_all_stories():
     return stories
 
 def get_stories_by_category(category):
-    conn = sqlite3.connect('stories.db')
+    """جلب القصص حسب الفئة"""
+    conn = sqlite3.connect(DB_PATH)
     c = conn.cursor()
     c.execute("SELECT * FROM stories WHERE category = ? ORDER BY id DESC", (category,))
     stories = c.fetchall()
@@ -35,7 +50,8 @@ def get_stories_by_category(category):
     return stories
 
 def add_comment(story_id, comment_text, date):
-    conn = sqlite3.connect('stories.db')
+    """إضافة تعليق"""
+    conn = sqlite3.connect(DB_PATH)
     c = conn.cursor()
     c.execute("INSERT INTO comments (story_id, comment_text, date) VALUES (?,?,?)",
               (story_id, comment_text, date))
@@ -43,7 +59,8 @@ def add_comment(story_id, comment_text, date):
     conn.close()
 
 def get_comments(story_id):
-    conn = sqlite3.connect('stories.db')
+    """جلب تعليقات قصة معينة"""
+    conn = sqlite3.connect(DB_PATH)
     c = conn.cursor()
     c.execute("SELECT * FROM comments WHERE story_id = ? ORDER BY id DESC", (story_id,))
     comments = c.fetchall()
@@ -51,7 +68,8 @@ def get_comments(story_id):
     return comments
 
 def get_story(story_id):
-    conn = sqlite3.connect('stories.db')
+    """جلب قصة معينة"""
+    conn = sqlite3.connect(DB_PATH)
     c = conn.cursor()
     c.execute("SELECT * FROM stories WHERE id = ?", (story_id,))
     story = c.fetchone()
@@ -59,7 +77,8 @@ def get_story(story_id):
     return story
 
 def delete_story(story_id):
-    conn = sqlite3.connect('stories.db')
+    """حذف قصة وجميع تعليقاتها"""
+    conn = sqlite3.connect(DB_PATH)
     c = conn.cursor()
     c.execute("DELETE FROM stories WHERE id = ?", (story_id,))
     c.execute("DELETE FROM comments WHERE story_id = ?", (story_id,))
@@ -67,11 +86,10 @@ def delete_story(story_id):
     conn.close()
 
 def check_story_password(story_id, password):
-    conn = sqlite3.connect('stories.db')
+    """التحقق من كلمة مرور القصة"""
+    conn = sqlite3.connect(DB_PATH)
     c = conn.cursor()
     c.execute("SELECT password FROM stories WHERE id = ?", (story_id,))
     result = c.fetchone()
     conn.close()
-    if result:
-        return result[0] == password
-    return False
+    return result and result[0] == password
