@@ -166,9 +166,21 @@ def admin_logout():
     session.pop('admin', None)
     return redirect(url_for('index'))
 
+# ========== رابط سري للمشرف ==========
+ADMIN_SECRET_KEY = "kl98yh65df90"  # غير هذا الرمز إلى ما تريد
+
+@app.route('/admin/<secret>')
+def admin_panel(secret):
+    if secret == ADMIN_SECRET_KEY:
+        session['admin'] = True
+        return redirect(url_for('index'))
+    return "Page not found", 404
+
+# ========== معالجة الأخطاء ==========
 @app.errorhandler(404)
 def page_not_found(e):
     return render_template('404.html'), 404
+
 
 @app.errorhandler(403)
 def forbidden(e):
